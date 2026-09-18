@@ -2,57 +2,154 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --bg: 250 249 246;
+    --surface: 255 255 255;
+    --surface-2: 244 242 236;
+    --fg: 18 18 21;
+    --muted: 95 99 107;
+    --border: 17 17 20;
+    --accent: 172 119 70;
+    --accent-2: 122 140 92;
+    --accent-3: 199 146 96;
+    --glow: 212 163 115;
+  }
+
+  .dark {
+    --bg: 9 9 11;
+    --surface: 19 19 22;
+    --surface-2: 28 28 32;
+    --fg: 237 237 240;
+    --muted: 139 143 152;
+    --border: 255 255 255;
+    --accent: 212 163 115;
+    --accent-2: 204 213 174;
+    --accent-3: 254 250 224;
+    --glow: 212 163 115;
+  }
+
+  * {
+    border-color: rgb(var(--border) / 0.08);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: rgb(var(--bg));
+    color: rgb(var(--fg));
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  ::selection {
+    background: rgb(var(--accent) / 0.28);
+    color: rgb(var(--fg));
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+@layer components {
+  .glass {
+    background: rgb(var(--surface) / 0.6);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgb(var(--border) / 0.09);
+  }
 
+  .card {
+    position: relative;
+    background: rgb(var(--surface) / 0.55);
+    border: 1px solid rgb(var(--border) / 0.09);
+    border-radius: 1.25rem;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.4s ease, background-color 0.4s ease;
+  }
 
-body.dark {
-  background-color: #333;
-  color: #fff;
-}
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgb(var(--accent) / 0.35);
+    background: rgb(var(--surface) / 0.85);
+  }
 
+  .text-gradient {
+    background-image: linear-gradient(
+      110deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-3)),
+      rgb(var(--accent-2))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    border: 1px solid rgb(var(--border) / 0.1);
+    background: rgb(var(--surface-2) / 0.8);
+    padding: 0.25rem 0.7rem;
+    font-size: 0.75rem;
+    line-height: 1.1rem;
+    color: rgb(var(--muted));
+    transition: color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .chip:hover {
+    color: rgb(var(--fg));
+    border-color: rgb(var(--accent) / 0.4);
+  }
+
+  .grid-bg {
+    background-image: linear-gradient(
+        rgb(var(--border) / 0.055) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgb(var(--border) / 0.055) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 55% at 50% 0%, #000 50%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 55% at 50% 0%, #000 50%, transparent 100%);
+  }
+
+  .noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .fade-edges {
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
   }
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #292929;
+  background-color: rgb(var(--bg));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #d4a373 0%, #ccd5ae 100%);
-  border-radius: 4px;
+  background: linear-gradient(180deg, rgb(var(--accent)), rgb(var(--accent-2)));
+  border-radius: 9999px;
+  border: 3px solid rgb(var(--bg));
 }
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #d5995e 0%, #838c66 100%);
-}
-

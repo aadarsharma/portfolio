@@ -1,48 +1,72 @@
-"use client"
-import React from 'react';
+import React from "react";
+import Reveal from "./Reveal";
+import SectionHeading from "./SectionHeading";
+import { HiArrowUpRight } from "react-icons/hi2";
 
-const accomplishments = [
-    {
-        title: "Android Development with Kotlin",
-        organization: "GeeksforGeeks",
-        dateRange: "Oct 2023",
-        location: "1f8f5332f81c75d60ccc0d64a8d17969",
-        proofUrl: "https://media.geeksforgeeks.org/courses/certificates/1f8f5332f81c75d60ccc0d64a8d17969.pdf"
-    },
-    {
-        title: "Supreme Batch DSA Bootcamp",
-        organization: "CodeHelp",
-        dateRange: "Aug 2023",
-        location: "OMSCXNHI",
-        proofUrl: "https://learn.codehelp.in/share-certificate?serialno=OMSCXNHI"
-    }
+const achievements = [
+  {
+    metric: "1741",
+    label: "Highest rating",
+    title: "LeetCode",
+    detail: "Top ~10% globally in data structures & algorithms.",
+    href: "https://leetcode.com/u/adarsharma56763/",
+  },
+  {
+    metric: "3★",
+    label: "1639 rating",
+    title: "CodeChef",
+    detail: "Top ~1% of 200,000+ in competitive programming.",
+    href: "",
+  },
+  {
+    metric: "#841",
+    label: "Global rank",
+    title: "TCS CodeVita S12",
+    detail: "Out of 200,000+ participants worldwide.",
+    href: "",
+  },
 ];
 
-const Accomplishments = () => {
-  return (
-    <section className='text-white'>
-      <div className='items-center py-8 px-4 xl:gap-16 sm:py-16 xl:px-16 flex flex-col-reverse md:flex-row'>
-        <div className="md:w-2/3 space-y-5 sm:p-5 md:space-y-10 px-10 py-5">
-          {accomplishments.map((acc, index) => (
-            <div key={index} className="border-r-4 border-[#fefae0] pr-4">
-              <h3 className="text-xl font-semibold">{acc.title}</h3>
-              <p className="text-md">{acc.organization}</p>
-              <p className="text-sm italic">{acc.dateRange} · {acc.location}</p>
-              <button
-                className="border-2 border-solid border-[#fefae0] hover:border-[#d4a373] text-white font-semibold py-2 px-4 rounded mt-2"
-                onClick={() => window.open(acc.proofUrl, '_blank')}
-              >
-                PDF
-              </button>
-            </div>
-          ))}
-        </div>
-        <div className='md:w-1/3 text-center justify-center p-5'>
-          <h2 className="text-4xl font-bold text-white mb-4">Accomplishments and Certifications</h2>
-        </div>
-      </div>
-    </section>
-  )
-}
+const Accomplishments = () => (
+  <section id="achievements" className="scroll-mt-28 py-20 sm:py-28">
+    <SectionHeading
+      eyebrow="04 — Achievements"
+      title="Measured against the field."
+      align="center"
+    />
+
+    <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {achievements.map((a, i) => {
+        const Wrapper = a.href ? "a" : "div";
+        return (
+          <Reveal key={a.title} delay={i * 0.08}>
+            <Wrapper
+              {...(a.href
+                ? { href: a.href, target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+              className="card group flex h-full flex-col p-6"
+            >
+              <div className="flex items-start justify-between">
+                <span className="bg-gradient-to-br from-accent to-accent-sage bg-clip-text text-4xl font-semibold tracking-tightest text-transparent sm:text-5xl">
+                  {a.metric}
+                </span>
+                {a.href && (
+                  <HiArrowUpRight className="h-4 w-4 text-muted transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+                )}
+              </div>
+              <p className="mt-1 font-mono text-xs uppercase tracking-[0.18em] text-muted">
+                {a.label}
+              </p>
+              <h3 className="mt-5 text-lg font-semibold text-fg">{a.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {a.detail}
+              </p>
+            </Wrapper>
+          </Reveal>
+        );
+      })}
+    </div>
+  </section>
+);
 
 export default Accomplishments;
